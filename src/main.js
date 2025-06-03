@@ -34,7 +34,7 @@ createElement('div', {
 }, [
                 createElement('button', {
                                 class: "w-[80px] h-[70px] rounded-2xl border-4 border-[#f5e8cc] cursor-pointer  rounded-xl hover:bg-[#E0A75E] focus:bg-[#E0A75E] transition-colors",
-                                onclick: afficherContact
+                                onclick: afficherMessage
 
                                 // onclick: afficherMessages
                                         }, [
@@ -54,7 +54,7 @@ createElement('div', {
                 ]),
                 createElement('button', {
                         class: "w-[80px] h-[70px] border-4 border-[#f5e8cc] rounded-2xl cursor-pointer  rounded-xl hover:bg-[#E0A75E] focus:bg-[#E0A75E] transition-colors",
-                    
+                        onclick: afficherDiffusion
                         
                 }, [
                         createElement('i', {
@@ -151,7 +151,23 @@ createElement('div', {
                         ]),
                 ]),
 
-                createElement('div', {class:"h-[710px] bg-[#efe7d7] overflow-scroll", id: "zone-message"}),
+                createElement('div', {class:"h-[710px] bg-[#efe7d7] overflow-scroll flex", id: "zone-message"},
+                    [
+                         createElement('div',{class: "border-2 border-black w-[250px] h-[100px] mt-[100px]"}, [
+                                    createElement('div', {class: "w-250px h-[20px]  "}, 'Khadidiatou Fall'),
+                                    createElement('div', {class: "w-250px h-[50px] ",} , 'T inquiete'),
+                                    createElement('div', {class: "w-250px h-[30px]"}, [createElement("p", { class: "text-black" }, `12h 30`)])
+                         ]),
+                         createElement('div',{class: "border-2 border-black w-[250px] h-[100px] ml-[700px]"}, [
+                                    createElement('div', {class: "w-250px h-[20px]  "}, 'Vous'),
+                                    createElement('div', {class: "w-250px h-[50px] ",} , 'Salam comment tu vas'),
+                                    createElement('div', {class: "w-250px h-[30px]"}, [createElement("p", { class: "text-black" }, `12h 30`)])
+
+
+                         ])
+
+                    ]
+                ),
 
 
                 createElement('div', {class:"h-[160px] flex items-center justify-center gap-2", id: "zone-envoi-message"}, [
@@ -172,7 +188,7 @@ createElement('div', {
 ]);
                                 
                                 
- document.body.appendChild(app)
+ document.body.appendChild(pageConnexion)
                                 
                                 
                                 
@@ -180,7 +196,11 @@ createElement('div', {
 // --------------$$$$$$$$$$$$$$$$$$$$$$$--------------MES GLOBALS-------------------$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$-------------------
 const body= document.querySelector('body')
 let contactSelectionne = null;
-
+const heure = new Date().toLocaleTimeString('fr-FR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    });
 
 let tabContact = [
                                         
@@ -212,36 +232,102 @@ let tabGroupe = [
 ];
 
 let tabArchive = [];
+
+let tabMessage=[
+    {
+            id: 1,
+            envoyerPar: 1, 
+            reçuPar: 2,
+            contenu:"Salam, comment ça va",
+            heure: "12:00",
+    },
+
+    {
+            id: 2,
+            envoyerPar: 2,
+            reçuPar: 1,
+            contenu:"ça va bien et toi",
+            heure: "12:05",
+    },
+
+    {
+            id: 3,
+            envoyerPar: 1,
+            reçuPar: 2,
+            contenu:"Salam, comment ça va",
+            heure: "12:00",
+    }
+]
 // ---------------$$$$$$$$$$$$$$$$$$$--------------------MES FONCTIONS D'AFFICHAGES------------------------$$$$$$$$$$$$$$$$$$$$$$$$$-------------------------  
 
    
 
-function afficherContact() {
+function afficherMessage() {
     div.innerHTML = '';
 
     tabContact.forEach((contact) => {
+         const heure = new Date().toLocaleTimeString('fr-FR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    });
         const contactDiv = createElement('button', {
-            class: "p-2 bg-[#efe7d7] w-[480px] m-2 rounded-[45px] shadow h-[80px] flex",
+            class: "bg-[#efe7d7] w-[480px]  rounded-[10px] shadow h-[80px] flex m-2",
             onclick: () => {
                 afficherContactScontour(contact.id);  
                 contactSelectionne = contact;      
             }
         }, [
-                createElement('div',{class: "w-"})
+                createElement('div',{class: "w-[100px] h-[80px] flex  items-center"},[
+                            createElement('div', {class: "w-[60px] h-[60px] bg-[#E0A75E] rounded-[30px] ml-2 text-[#FAFFCA] flex items-center justify-center text-[30px]"}, `${contact.prenom[0].toUpperCase()}${contact.nom[0].toUpperCase()}`),
+                ]),
+                createElement('div',{class: "w-[350px] h-[80px] flex  flex-col justify-center"},[
+                            createElement('span', { class: "flex" }, `${contact.prenom} ${contact.nom}`),
+                            createElement('div', {class: "flex"}, 'Dernier Message')
 
+                ]),
+                createElement('div',{class: "w-[100px] h-[80px] flex justify-center items-center"},[
+                             createElement("p", { class: "text-black" }, `${heure}`),
 
-
-            // createElement('div', {
-            //     class: "w-[60px] h-[60px] bg-[#E0A75E] rounded-[30px] ml-2 text-[#FAFFCA] flex items-center justify-center text-[30px]"
-            // }, `${contact.prenom[0].toUpperCase()}${contact.nom[0].toUpperCase()}`),
-            // createElement('span', { class: "ml-[10px] whitespace-nowrap" }, `${contact.prenom} ${contact.nom}`),
-            // createElement("input", {
-            //     class: "w-[20px] h-[20px]  rounded-[5px] ml-[260px]",
-            //     type: "checkbox",
-            //     id: "checkbox"
-            // })
+                ])
+           
         ]);
 
+
+        div.appendChild(contactDiv);
+    });
+}
+
+
+function afficherDiffusion() {
+    div.innerHTML = '';
+
+    tabContact.forEach((contact) => {
+        const contactDiv = createElement('button', {
+            class: "bg-[#efe7d7] w-[480px]  rounded-[10px] shadow h-[80px] flex m-2",
+            onclick: () => {
+                afficherContactScontour(contact.id);  
+                contactSelectionne = contact;      
+            }
+        }, [
+                createElement('div',{class: "w-[100px] h-[80px] flex justify-center items-center"},[
+                            createElement('div', {class: "w-[60px] h-[60px] bg-[#E0A75E] rounded-[30px] ml-2 text-[#FAFFCA] flex items-center justify-center text-[30px]"}, `${contact.prenom[0].toUpperCase()}${contact.nom[0].toUpperCase()}`),
+                ]),
+                createElement('div',{class: "w-[350px] h-[80px] flex items-center"},[
+                            createElement('span', { class: "ml-[10px] whitespace-nowrap" }, `${contact.prenom} ${contact.nom}`),
+
+                ]),
+                createElement('div',{class: "w-[100px] h-[80px] flex justify-center items-center"},[
+                             createElement("input", {
+                class: "w-[20px] h-[20px]  rounded-[5px] ",
+                type: "checkbox",
+                id: "checkbox"
+                })
+                ])
+           
+        ]);
+
+        
         div.appendChild(contactDiv);
     });
 }
@@ -282,17 +368,28 @@ function afficherGroupe() {
 
     tabGroupe.forEach(groupe => {
         const groupeDiv = createElement('button', {
-            class: "p-2 bg-white w-[480px] m-2 rounded-[45px] shadow h-[80px] flex items-center mt-[30px]"
+            class: "bg-[#efe7d7] w-[480px]  rounded-[10px] shadow h-[80px] flex m-2 "
         }, [
-            createElement('div', { class: "w-[60px] h-[60px] bg-[#747474] rounded-[30px] ml-2" }),
+                createElement('div',{class: "w-[100px] h-[80px] flex justify-center items-center"},[
+                            createElement('div', { class: "w-[60px] h-[60px] bg-[#E0A75E] rounded-[30px] ml-2 text-[#FAFFCA] flex items-center justify-center text-[30px]" }, `${groupe.nom[0].toUpperCase()}`),
 
-            createElement('div', { class: "ml-[10px]" }, [
-                createElement('div', {}, `${groupe.nom}`),
-                createElement('div', { class: "whitespace-nowrap" }, `${groupe.membres.length} membres`)
-            ]),
+                ]),
+                createElement('div',{class: "w-[350px] h-[80px] flex items-center"},[
+                            createElement('div', {}, `${groupe.nom}`),
 
-            createElement("p", { class: "text-[#40cd3f] ml-[150px]" }, `${heure}`),
-            createElement("div", { class: "w-[10px] h-[10px] bg-[#40cd3f] rounded-[5px] ml-[25px]" })
+                ]),
+                createElement('div',{class: "w-[100px] h-[80px] flex justify-center items-center"},[
+                             createElement("p", { class: "text-black" }, `${heure}`),
+                ])
+
+            // createElement('div', { class: "w-[60px] h-[60px] bg-[#747474] rounded-[30px] ml-2" }),
+
+            // createElement('div', { class: "ml-[10px]" }, [
+            //     createElement('div', {}, `${groupe.nom}`),
+            //     createElement('div', { class: "whitespace-nowrap" }, `${groupe.membres.length} membres`)
+            // ]),
+
+            // createElement("p", { class: "text-[#40cd3f] ml-[150px]" }, `${heure}`),
         ]);
 
         div.appendChild(groupeDiv);
@@ -317,7 +414,7 @@ const div= document.getElementById('div')
                                                                  createElement('input', {class: "w-[400px] h-[50px] rounded-[10px] pl-[10px] outline-none bg-[#f9f7f5]", placeholder: "Saisissez le prenom", id: "prenom"}),
                                                                  createElement('label', {}, 'Entrer votre numéro :'),
                                                                  createElement('input', {class: "w-[400px] h-[50px] rounded-[10px] pl-[10px] outline-none bg-[#f9f7f5]", placeholder: "Saisissez le numéro de téléphone", id: "numero"}),
-                                                                 createElement('button', {class: "bg-[#FAFFCA] w-[300px] h-[50px] rounded-[10px] ml-[55px] text-[#E0A75E] font-bold",id: 'bouton', onclick: ajouterContact}, 'Ajouter')
+                                                                 createElement('button', {class: "bg-[#E0A75E] w-[300px] h-[50px] rounded-[10px] ml-[55px] text-white font-bold",id: 'bouton', onclick: ajouterContact}, 'Ajouter')
                           ])
         // const formulaire2= createElement('form', {
         //                                            class: "flex flex-col gap-[15px] pl-[10px] mt-[30px]", id: "groupe"
@@ -637,6 +734,12 @@ function effacerErreur(tag) {
        
           
 
+
+// palette couleur 
+    // #973131
+    // #E0A75E
+    // #F9D689
+    // #F5E7B2
 
 
 
